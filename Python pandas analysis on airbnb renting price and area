@@ -1,0 +1,120 @@
+
+##This dataset was obtained from airbnb NewYork open datasource and This data analysis report shows the sample data analyst daily work:
+
+#Language used: Python, Pandas
+
+
+1. Import pandas libraries
+import numpy as np
+from numpy import median
+import pandas as pd
+pd.plotting.register_matplotlib_converters()
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+
+2. Formatting pandas output
+pd.options.display.float_format = '{:,.2f}'.format  
+pd.options.display.max_columns = 200
+
+3. Loading data from online github file
+# read dataset into a DataFrame
+df = pd.read_csv('https://raw.githubusercontent.com/chuludata/AirbnbNewYorkOpenDataset/main/AB_NYC_2019.csv')
+
+df.head()
+
+4.Data profiling
+df.shape
+df.describe()
+df.isnull().sum()
+df['neighbourhood_group'].unique()
+array(['Brooklyn', 'Manhattan', 'Queens', 'Staten Island', 'Bronx'],
+      dtype=object)
+      
+      
+5. EDA Explorat
+5.1. What are the top 3 districts that have biggest number of renting?
+Answer: the top 3 districts that have biggest number of renting are Manhattan, Brooklyn, Queens.
+Pandas Tool used: Bar chart is used to identify the top 3 districts that have biggest number of renting.ory Data Analysis
+
+df['neighbourhood_group'].value_counts(sort=True).nlargest(3).plot.bar()
+
+5.2. What is the top 1 room type in renting?
+Answer: the top 1 room type in renting is 'Entire home/apt'.
+Pandas Tool used: Pie chart is used to identify the top 1 room type in renting.
+
+df['neighbourhood_group'].value_counts(sort=True).nlargest(3).plot.bar()
+df['room_type'].value_counts().plot(kind='pie', autopct='%1.0f%%', figsize=(15,10))
+plt.title("Pie Chart of Room Type in Renting", size=20)
+plt.show()
+
+5.3 What is the count of renting in each district and subgrouped by room type?
+Answer: The bar chart with two variables (district and room_type) is drawn below. Draw the bar chart to show the count of renting in each district and subgrouped by room type.
+Pandas Tool used: Seaborn Countplot with Two Variables using Hue. The function countplot is called with 'x' (the big-group variable, 'neighbourhood_group' in this example) and 'hue' parameter (the sub-group variable, 'room_type' in this example).
+
+sns.countplot(x='neighbourhood_group', hue='room_type', data=df,  palette="spring")
+plt.title('Renting Count in Each District by Room Type', size=15)
+plt.ylabel('Count of Rooms', size=20)
+plt.xlabel('District', size=20)
+plt.show()
+
+5.4 What is the price of renting in each district and subgrouped by room type?
+Answer: The two bar charts is drawn below. Draw the two bar charts side by side to show the price of renting in each district and subgrouped by room type.
+Pandas Tool used: Two charts are drawn with plt.subplots. Seaborn barplot with Two Variables using Hue.
+The function barplot is called with 'x' (the big-group variable, 'neighbourhood_group' in this example) and 'hue' parameter (the sub-group variable, 'room_type' in this example). y value is using 'price'.
+The second barplot uses estimator=median to show the median value.
+
+order = ['Bronx', 'Staten Island', 'Manhattan', 'Brooklyn','Queens']
+
+fig, ax = plt.subplots(1, 2, figsize=(20,5))
+
+sns.barplot(data=df, y='price', x='neighbourhood_group',ax=ax[0], hue='room_type' ,order=order)
+ax[0].set_title('Renting Price in Each District by Room Type(Mean)', size=15)
+ax[0].set_xlabel('Areas', size=15)
+ax[0].set_ylabel('Price', size=15)
+
+sns.barplot(data=df, y='price', x='neighbourhood_group',ax=ax[1], hue='room_type' ,order=order, estimator=median)
+ax[1].set_title('Renting Price in Each District by Room Type(Median)', size=15)
+ax[1].set_xlabel('Areas', size=15)
+ax[1].set_ylabel("Price", size=15)
+
+5.5 What are the 10 highest price neighborhood in New York?
+Answer: The bar chart to show the 10 highest price neighborhood is drawn below.
+Pandas Tool used: The 10 highest price neighborhood is save in variable 'high_10_price'. sns.barplot is used to draw the bar chart for variable 'high_10_price'.
+Documentation for subplots
+Documentation for barplot
+plt.subplots returns two values, we save these two values in (fig, ax).
+
+# The 10 highest grice neighborhood is save in variable 'high_5_price'
+high_10_price = df.groupby('neighbourhood')['price'].mean().sort_values(ascending=False).head(10)
+
+# Draw the bar chart
+fig, ax = plt.subplots(figsize=(14,8))
+
+sns.barplot(data=df, y=high_10_price, x=high_10_price.index, palette="rocket")
+
+plt.title("10 highest price neighbourhood in New York", size=40)
+plt.xlabel("Neighbourhood of New York", size=30)
+plt.ylabel("Price", size=30)
+
+plt.show()
+
+5.6 What are the 10 highest price neighborhood of Manhattan?
+Answer: The bar chart to show the 10 highest price neighborhood of Manhattan is drawn below.
+
+Pandas Tool used: The sub dataframe of Manhattan data is saved in variable 'df_manhattan'. 
+The 10 highest price neighborhood of Manhattan is save in variable 'high_10_price_manhattan'. 
+sns.barplot is used to draw the bar chart for variable 'high_10_price_manhattan'.
+
+df_manhattan = df[df['neighbourhood_group'] == "Manhattan"]
+high_10_price_manhattan = df_manhattan.groupby('neighbourhood')['price'].mean().sort_values(ascending=False).head(10)
+high_10_price_manhattan
+
+fig, ax = plt.subplots(figsize=(14, 8))
+sns.barplot(data=df_manhattan, y=high_10_price_manhattan, x=high_10_price_manhattan.index, palette="viridis")
+plt.title("10 highest price neighbourhood in Manhattan", size=15)
+plt.ylabel("Price", size=15)
+plt.xlabel("Neighbourhood of Manhattan", size=15)
+
+
+
