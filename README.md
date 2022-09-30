@@ -1,4 +1,5 @@
 ##Summary
+
 This analysis shows a comlete sample data analysis report.
 It shows how to document and format the Jupyter Notebook.
 It uses real airbnb public data of renting price and area. The Exploratory Data Analysis(EDA) showed technique of loading data from online resourc using pd.read_csv; data profiling with df.shape, df.info(), df.describe(), df.isnull().sum(). Business questions are answered with graph -- bar chart, pie chart, sns.barplot, sns.barplot.
