@@ -1,6 +1,6 @@
 ##Summary
 
-This analysis shows a comlete sample data analysis report.
+This analysis shows a comlete sample data analysis report
 
 It shows how to document and format the Jupyter Notebook.
 
